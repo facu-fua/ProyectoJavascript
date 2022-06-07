@@ -1,18 +1,38 @@
-alert("Algoritmo para calculo de porcentajes")
-let monto = prompt("Ingrese un monto");
-let calculos = parseInt(prompt("Cuantas veces desea hacer calculos?"));
-let porcentaje;
-let resultado;
+alert ("Calculadora costo helado");
 
-for (let k=1; k<=calculos; k++){
-porcentaje=parseInt(prompt("Ingrese el numero de porcentaje que desea obtener"));
-if (porcentaje == 0){
-    alert("Error: ingrese un porcentaje distinto de 0");
-    break;
+let peso = prompt("Ingrese el peso que desea: cuarto, mediokilo o kilo");
+let cantidad = parseInt(prompt("Cuantos desea llevar?"));
+let resultado;
+let envio = prompt("Desea que se envie a su domicilio? si/no");
+
+function domicilio(){
+    let calle = prompt("Ingrese su calle");
+    let numero = +prompt("Ingrese su numero de domicilio");
+    alert("Usted ingreso: " + calle + " " + numero);
+    /* aca se colocaria alguna operacion para enviar esta info al cadete */
 }
-resultado=(monto*porcentaje)/100
-alert("El porcentaje es= " + resultado)
+
+switch(peso.toLowerCase()){
+    case "cuarto":
+        resultado = cantidad*450;
+        break;
+    case "mediokilo":
+        resultado = cantidad*750;
+        break;
+    case "kilo":
+        resultado = cantidad*1500;
+        break;
+    default:
+        alert("Error: escriba correctamente alguna de las opciones dadas")
+        break;
 }
+
+if (envio.toLowerCase() === "si"){
+    resultado=resultado+200;
+    domicilio()
+}
+alert("El costo total sera de: " + resultado)
+
 
 
 
