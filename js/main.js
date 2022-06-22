@@ -43,8 +43,6 @@ for(const helado of sabores){
     document.body.appendChild(sabor)
 };
 
-gusto1 = prompt("Elije un sabor " + sabores[nombre].join(", "))
-console.log(sabores[1].nombre)
 
 /* let peso = prompt("Ingrese el peso que desee: cuarto, mediokilo o kilo");
 let cantidad = parseInt(prompt("Cuantos desea llevar?"));
