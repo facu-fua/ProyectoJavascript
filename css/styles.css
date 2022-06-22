@@ -1,0 +1,19 @@
+body{
+    background-color: rgb(140, 233, 202);
+}
+.oscuro{
+    background-color: rgb(36, 80, 65);
+}
+header{
+    background-color: antiquewhite;
+}
+div{
+    background-color: darksalmon;
+}
+article{
+    background-color: rgb(235, 29, 235);
+}
+
+footer{
+    background-color: antiquewhite;
+}
