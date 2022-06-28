@@ -2,11 +2,11 @@ let gusto1; let gusto2; let gusto3; let gusto4; let resultado = 0; let envio; le
 
 /* Permito que el usuario modifique el HTML */
 let saludo = document.getElementById("saludo");
-saludo.innerText = "Hola " + prompt("Ingrese su nombre");
+/* saludo.innerText = "Bienvenido " + prompt("Ingrese su nombre");
 let oscuro = prompt("Desea entrar en modo oscuro? si/no");
 if(oscuro.toLowerCase()==="si"){
     document.body.className = "oscuro"
-};
+}; */
 
 /* clase constructora de helados */
 class Helado{
@@ -33,15 +33,38 @@ console.log(sabores)
 
 /* Creo divs para c/helado por js */
 for(const helado of sabores){
-    let sabor = document.createElement("div");
+    let sabor = document.createElement("article");
     if(helado.disponible===true){
         helado.disponible= "si"
     }else {helado.disponible="no"};
     sabor.innerHTML = 
     `<h2>Helado: ${helado.nombre} </h2>
-    <h5>Disponible: ${helado.disponible} </h5>`;
-    document.body.appendChild(sabor)
+    <h5>Disponible: ${helado.disponible} </h5>
+    <input type="button" value="Agregar">`;
+    document.getElementById("sabores").appendChild(sabor);
+    document.getElementsByTagName("article").className = "helado"; /* solucionar */
 };
+
+let click = document.querySelectorAll(".agregar");
+click.onclick = () => {alert("Agregado al carrito")} /* no funciona */
+
+let oscuro = document.getElementById("oscuro");
+oscuro.onmousedown = () => {document.body.className = "oscuro"} /* Reemplazar para que registre el check */
+
+let form = document.getElementById("form");
+form.addEventListener("submit", mensaje);
+function mensaje (e){
+    e.preventDefault();
+    let calle = document.getElementById("calle").value;
+    let direccion = document.getElementById("direccion").value;
+    if ((calle.length<3) || (calle==="") || (direccion==="") || (calle.length>20) || direccion.length>20 ) {
+        alert("Ingrese una calle/numero valida");
+    } else {alert("Su pedido sera enviado a " + calle + " " + direccion)}
+}
+
+let nombre = document.getElementById("usuario");
+nombre.onchange = () => {saludo.innerText = "Bienvenido " + nombre.value}
+
 
 
 /* let peso = prompt("Ingrese el peso que desee: cuarto, mediokilo o kilo");

@@ -6,26 +6,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto Javascript</title>
+    <!-- Fonts -->
+    <!-- 1 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ribeye+Marrow&display=swap" rel="stylesheet">
+<!-- 2 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cagliostro&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
     <header>
-        <nav>
-
-        </nav>
-        <h1>Bienvenidos a Heladeria Pepito</h1>
-        <h3 id="saludo"></h3>
+        <div id="logo">
+            <img id="imagen" src="/multimedia/icono.webp" alt="helado">
+            <h1>Heladeria Pepito</h1>
+        </div>
+        <div id="ingreso">
+            <label for="usuario">Usuario</label>
+            <input type="text" name="" id="usuario">
+            <label for="contra">Contraseña</label>
+            <input type="password" name="contrasenia" id="contra">
+            <input type="button" value="Ingresar">
+        </div>
     </header>
 
-    <section>
+    <div id="saludoCarrito">
+        <h2 id="saludo"></h2>
+        <div id="carrito">
+            <input type="image" src="/multimedia/carrito.png" alt="">
+        </div>
+    </div>
+
+    <section id="sabores">
+        <label for="oscuro">Desea entrar en modo oscuro?</label>
+        <input type="checkbox" name="" id="oscuro">
         <h1>Sabores:</h1>
+        <article class="helado">
+            <img src="/multimedia/Helado de frutillas.jpg" alt="">
+            <h3>Frutilla</h3>
+            <p>Disponible</p>
+            <input class="agregar" type="button" value="Agregar">
+        </article>
 
     </section>
 
+    <div>
+        <form action="" id="form">
+            <label for="check">Desea envio a domicilio?</label>
+            <input type="checkbox" name="" id="check">
+            <label for="calle">Ingrese su direccion</label>
+            <input type="text" name="" id="calle" placeholder="Calle">
+            <input type="number" name="" id="direccion" placeholder="Numero">
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+
     <footer>
-        
+        <h3>Encontranos en Rioja al 432</h3>
     </footer>
 
 <!-- JS -->
