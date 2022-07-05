@@ -1,8 +1,12 @@
+html {
+    margin: 10px;
+}
+
 body{
     display: flex;
     flex-direction: column;
     background-color: rgb(225, 252, 247);
-    font-family: 'Cagliostro', sans-serif;
+    font-family: 'Pragati Narrow', sans-serif;
 }
 
 h3{
@@ -11,10 +15,11 @@ h3{
 p{
     margin: 5px;
 }
-.claro {
-    background-color: rgb(225, 252, 247)}
 .oscuro{
     background-color: rgb(137, 155, 151);
+}
+.seleccionado{
+    background-color: greenyellow;
 }
 
 header{
@@ -23,6 +28,7 @@ header{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-right: 10px;
 }
 
 #logo{
@@ -42,11 +48,27 @@ header{
 #ingreso{
     background-color: none ;
     display: flex;
-    flex-direction: column;
     margin-right: 20px;
 }
 #ingreso input{
     margin: 5px;
+}
+#registro{
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.registro{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    top: 80px;
+    right: 450px;
+    width: 500px;
+    height: 500px;
+    background-color: cornflowerblue;
 }
 
 #saludoCarrito{
@@ -54,8 +76,15 @@ header{
     display: flex;
     justify-content: space-between;
 }
-
 #carrito{
+    position: fixed;
+    top: 200px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+#cartLogo{
     display: flex;
     width: 60px;
     height: 60px;
@@ -64,11 +93,37 @@ header{
     border-radius: 25px;
     padding: 3px;
 }
-#carrito input{
+#cartLogo input{
     justify-self: center;
     align-self: center;
     width: 50px;
     height: 50px;
+}
+#openCart{
+    background-color: rgb(255, 62, 62) ;
+    width: 300px;
+    border-color: black;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 5px;
+}
+.invisible{
+    display: none;
+}
+.pesos{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+.pesos img{
+    height: 200px;
+    width: 200px;
+}
+#sabores{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .helado{

@@ -7,14 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto Javascript</title>
     <!-- Fonts -->
-    <!-- 1 -->
+    <!-- titulo -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Ribeye+Marrow&display=swap" rel="stylesheet">
-<!-- 2 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cagliostro&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ribeye+Marrow&display=swap" rel="stylesheet">
+    <!-- general -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pragati+Narrow&display=swap" rel="stylesheet">
+    <!-- CSS Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <!-- CSS -->
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -25,26 +28,98 @@
             <img id="imagen" src="/multimedia/icono.webp" alt="helado">
             <h1>Heladeria Pepito</h1>
         </div>
-        <div id="ingreso">
-            <label for="usuario">Usuario</label>
-            <input type="text" name="" id="usuario">
-            <label for="contra">Contraseña</label>
-            <input type="password" name="contrasenia" id="contra">
-            <input type="button" value="Ingresar">
+
+        <div>
+            <div id="ingreso">
+                <input type="text" name="" id="usuario" placeholder="Usuario">
+                <input type="password" name="contrasenia" id="contra" placeholder="Contraseña">
+                <input type="button" value="Ingresar" id="ingresar">
+            </div>
+            <div id="registro">
+                <h6 id="error1"></h6>
+                <h6>Aun no tienes cuenta? <input id="registrate" type="button" value="Registrate"></h6>
+                <div class="registro invisible">
+                    <label for="userRegistro">Ingrese un usuario</label>
+                    <input type="text" name="" id="userRegristo">
+                    <label for="passRegistro">Ingrese una contraseña</label>
+                    <input type="password" name="" id="passRegistro">
+                    <h6 id="error2"></h6>
+                    <input type="button" value="Registrase" id="btnRegistro">
+                </div>
+            </div>
         </div>
     </header>
 
     <div id="saludoCarrito">
         <h2 id="saludo"></h2>
-        <div id="carrito">
-            <input type="image" src="/multimedia/carrito.png" alt="">
+        <div>
+            <label for="oscuro">Desea entrar en modo oscuro?</label>
+            <input type="checkbox" name="" id="oscuro">
         </div>
     </div>
 
-    <section id="sabores">
-        <label for="oscuro">Desea entrar en modo oscuro?</label>
-        <input type="checkbox" name="" id="oscuro">
+    <div>
+        <h1>Pesos:</h1>
+        <div class="pesos">
+            <button class="peso"><img src="/multimedia/kilo.jpg" alt="">
+                <h2>1 Kilo</h2>
+                <h3>$1500</h3>
+                <p>(hasta 4 gustos)</p>
+            </button>
+            <button class="peso"><img src="/multimedia/mediokilo.png" alt="">
+                <h2>Mediokilo</h2>
+                <h3>$800</h3>
+                <p>(hasta 4 gustos)</p>
+            </button>
+            <button class="peso"><img src="/multimedia/cuarto.png" alt="">
+                <h2>Cuartokilo</h2>
+                <h3>$450</h3>
+                <p>(hasta 3 gustos)</p>
+            </button>
+        </div>
+    </div>
+
+    <div>
         <h1>Sabores:</h1>
+    </div>
+
+    <section id="sabores">
+        <article class="helado">
+            <img src="/multimedia/Helado de frutillas.jpg" alt="">
+            <h3>Frutilla</h3>
+            <p>Disponible</p>
+            <input class="agregar" type="button" value="Agregar">
+        </article>
+        <article class="helado">
+            <img src="/multimedia/Helado de frutillas.jpg" alt="">
+            <h3>Frutilla</h3>
+            <p>Disponible</p>
+            <input class="agregar" type="button" value="Agregar">
+        </article>
+        <article class="helado">
+            <img src="/multimedia/Helado de frutillas.jpg" alt="">
+            <h3>Frutilla</h3>
+            <p>Disponible</p>
+            <input class="agregar" type="button" value="Agregar">
+        </article>
+        <article class="helado">
+            <img src="/multimedia/Helado de frutillas.jpg" alt="">
+            <h3>Frutilla</h3>
+            <p>Disponible</p>
+            <input class="agregar" type="button" value="Agregar">
+        </article>
+        <article class="helado">
+            <img src="/multimedia/Helado de frutillas.jpg" alt="">
+            <h3>Frutilla</h3>
+            <p>Disponible</p>
+            <input class="agregar" type="button" value="Agregar">
+        </article>
+        <article class="helado">
+            <img src="/multimedia/Helado de frutillas.jpg" alt="">
+            <h3>Frutilla</h3>
+            <p>Disponible</p>
+            <input class="agregar" type="button" value="Agregar">
+        </article>
         <article class="helado">
             <img src="/multimedia/Helado de frutillas.jpg" alt="">
             <h3>Frutilla</h3>
@@ -54,13 +129,28 @@
 
     </section>
 
+    <div id="carrito">
+        <div id="cartLogo">
+            <input type="image" src="/multimedia/carrito.png" alt="">
+        </div>
+        <div id="openCart" class="invisible">
+            <ul>
+                <h4>1 Kilo</h4>
+                <li>Frutilla</li>
+                <li>Limon</li>
+                <li>Chocolate</li>
+            </ul>
+        </div>
+    </div>
+
     <div>
         <form action="" id="form">
-            <label for="check">Desea envio a domicilio?</label>
-            <input type="checkbox" name="" id="check">
+            <!-- <label for="check">Desea envio a domicilio?</label>
+            <input type="checkbox" name="" id="check"> -->
             <label for="calle">Ingrese su direccion</label>
             <input type="text" name="" id="calle" placeholder="Calle">
             <input type="number" name="" id="direccion" placeholder="Numero">
+            <h6 id="error"></h6>
             <input type="submit" value="Enviar">
         </form>
     </div>
@@ -69,7 +159,11 @@
         <h3>Encontranos en Rioja al 432</h3>
     </footer>
 
-<!-- JS -->
+    <!-- Js bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
+    </script>
+    <!-- JS -->
     <script src="/js/main.js"></script>
 
 </body>

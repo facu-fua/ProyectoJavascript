@@ -1,13 +1,5 @@
 let gusto1; let gusto2; let gusto3; let gusto4; let resultado = 0; let envio; let direccion;
 
-/* Permito que el usuario modifique el HTML */
-let saludo = document.getElementById("saludo");
-/* saludo.innerText = "Bienvenido " + prompt("Ingrese su nombre");
-let oscuro = prompt("Desea entrar en modo oscuro? si/no");
-if(oscuro.toLowerCase()==="si"){
-    document.body.className = "oscuro"
-}; */
-
 /* clase constructora de helados */
 class Helado{
     constructor (id,nombre,disponible){
@@ -29,28 +21,29 @@ let rocher = new Helado (07,"rocher",false)
 /* Array con cada helado */
 let sabores = []
 sabores.push(frutilla,chocolate,dulceDeLeche,limon,vainilla,granizado,rocher)
-console.log(sabores)
 
-/* Creo divs para c/helado por js */
-for(const helado of sabores){
-    let sabor = document.createElement("article");
-    if(helado.disponible===true){
-        helado.disponible= "si"
-    }else {helado.disponible="no"};
-    sabor.innerHTML = 
-    `<h2>Helado: ${helado.nombre} </h2>
-    <h5>Disponible: ${helado.disponible} </h5>
-    <input type="button" value="Agregar">`;
-    document.getElementById("sabores").appendChild(sabor);
-    document.getElementsByTagName("article").className = "helado"; /* solucionar */
-};
+/* Aca botones de agregar helados */
+let clicks = document.querySelectorAll(".agregar");
 
-let click = document.querySelectorAll(".agregar");
-click.onclick = () => {alert("Agregado al carrito")} /* no funciona */
+function click(element){
+    element.onclick = () =>{if(element.classList.contains("seleccionado")){
+        element.classList.remove("seleccionado")
+        element.value = "Agregar";
+    }else{element.classList.add("seleccionado")
+        element.value = "Agregado!"
+    }}}
 
+clicks.forEach(click);
+
+/* Tema oscuro */
 let oscuro = document.getElementById("oscuro");
-oscuro.onmousedown = () => {document.body.className = "oscuro"} /* Reemplazar para que registre el check */
+let body = document.querySelector("body");
+oscuro.onclick = () => {if(body.classList.contains("oscuro")){
+    body.classList.remove("oscuro");
+} else {body.classList.add("oscuro")}
+    }
 
+/* Submit del form */
 let form = document.getElementById("form");
 form.addEventListener("submit", mensaje);
 function mensaje (e){
@@ -58,101 +51,78 @@ function mensaje (e){
     let calle = document.getElementById("calle").value;
     let direccion = document.getElementById("direccion").value;
     if ((calle.length<3) || (calle==="") || (direccion==="") || (calle.length>20) || direccion.length>20 ) {
-        alert("Ingrese una calle/numero valida");
-    } else {alert("Su pedido sera enviado a " + calle + " " + direccion)}
+        document.getElementById("error").innerText = "Ingrese una calle/numero valido";
+    } else {
+        document.getElementById("error").innerText = "Su pedido fue enviado con exito!"}
 }
 
+
+
+
+let expand = document.getElementById("openCart")
+let carrito = document.getElementById("cartLogo");
+
+/* Expandir carrito */
+carrito.onclick = () => {
+if(expand.classList.contains("invisible")){
+    expand.classList.remove("invisible")
+}else {expand.classList.add("invisible")}
+}   /* falta que los sabores y peso se reemplazen por los seleccionados */
+
+/* Expandir registro */
+let registrate = document.getElementById("registrate")
+let registro = document.querySelector(".registro")
+registrate.onclick = () => {
+    if(registro.classList.contains("invisible")){
+        registro.classList.remove("invisible")
+    }else {registro.classList.add("invisible")}
+}
+
+
+/* Selector peso */
+let pesos = document.querySelectorAll(".peso")
+let seleccionado = document.querySelectorAll(".seleccionado");
+pesos.forEach(function(element) {
+element.onclick = () => {if(element.classList.contains("seleccionado")){
+    element.classList.remove("seleccionado")
+}else{element.classList.add("seleccionado")}}
+})
+console.log(seleccionado)   /* referenciar los datos en aquellos elementos con class seleccionado */
+/* expand.innerHTML = `<ul><h4>${seleccionado.h2}</h4>
+<li></li>
+<li></li>
+<li></li>
+</ul>` */
+
+let user = document.getElementById("userRegristo")
+let pass = document.getElementById("passRegistro")
+let btn = document.getElementById("btnRegistro")
+
+/* Storage */
+localStorage.setItem("sabores", JSON.stringify(sabores));
+btn.onclick = () => {
+    if (user.value=== "" || user.value.length>15 || pass.value ==="" || pass.value.length>20){
+    document.getElementById("error2").innerText = "Ingrese entre 1 y 20 caracteres en cada area"
+    document.getElementById("error2").style = "color: red;"}
+    else{
+        document.getElementById("error2").innerText = ""
+        localStorage.setItem("usuario", (user.value));
+    localStorage.setItem("password", (pass.value));
+    }
+}
+
+/* Bienvenida */
 let nombre = document.getElementById("usuario");
-nombre.onchange = () => {saludo.innerText = "Bienvenido " + nombre.value}
-
-
-
-/* let peso = prompt("Ingrese el peso que desee: cuarto, mediokilo o kilo");
-let cantidad = parseInt(prompt("Cuantos desea llevar?"));
-const gustos = [];
-const eleccion = [];
-const sabores = ["frutilla","chocolate","vainilla","limon","dulce de leche"];
-
-
-
-
-function casos() { 
-    switch(peso.toLowerCase()){
-    case "cuarto":
-        resultado = cantidad*450;
-        alert("Puede seleccionar 3 gustos");
-        gusto1 = prompt("Elija el primer gusto " + sabores.join(", "));
-        if (sabores.includes(gusto1.toLowerCase())===false) {
-            alert("Gusto ingresado incorrecto");
-            break;
+let contrasenia = document.getElementById("contra")
+let saludo = document.getElementById("saludo")
+let ingresar = document.getElementById("ingresar");
+ingresar.onclick = () => {
+    if (nombre.value === localStorage.getItem("usuario") && contrasenia.value === localStorage.getItem("password")){
+        document.getElementById("error1").innerText = ""
+        saludo.innerText = "Bienvenido " + nombre.value}
+        else{
+            saludo.innerText = ""
+            document.getElementById("error1").innerText = "Su cuenta no existe, registrese";
+            document.getElementById("error1").style = "color: red;";
         }
-        gusto2 = prompt("Elija el segundo gusto " + sabores.join(", "));
-        if (sabores.includes(gusto2.toLowerCase())===false) {
-            alert("Gusto ingresado incorrecto");
-            break;
-        }
-        gusto3 = prompt("Elija el tercer gusto " + sabores.join(", "));
-        if (sabores.includes(gusto3.toLowerCase())===false) {
-            alert("Gusto ingresado incorrecto");
-            break;
-        }
-        break;
-    case "mediokilo":
-        resultado = cantidad*750;
-        alert("Puede seleccionar 4 gustos");
-        gusto1 = prompt("Elija el primer gusto " + sabores.join(", "))
-        if (sabores.includes(gusto1.toLowerCase())===false) {
-            alert("Gusto ingresado incorrecto");
-            break;
-        }
-        gusto2 = prompt("Elija el segundo gusto " + sabores.join(", "));
-        if (sabores.includes(gusto2.toLowerCase())===false) {
-            alert("Gusto ingresado incorrecto");
-            break;
-        }
-        gusto3 = prompt("Elija el tercer gusto " + sabores.join(", "));
-        if (sabores.includes(gusto3.toLowerCase())===false) {
-            alert("Gusto ingresado incorrecto");
-            break;
-        }
-        gusto4 = prompt("Elija el cuarto gusto " + sabores.join(", "));
-        if (sabores.includes(gusto4.toLowerCase())===false) {
-            alert("Gusto ingresado incorrecto");
-            break;
-        }
-        break;
-    case "kilo":
-        resultado = cantidad*1500;
-        alert("Puede seleccionar 4 gustos");
-        gusto1 = prompt("Elija el primer gusto " + sabores.join(", "))
-        if (sabores.includes(gusto1.toLowerCase())===false) {
-            alert("Gusto ingresado incorrecto");
-            break;
-        }
-        gusto2 = prompt("Elija el segundo gusto " + sabores.join(", "));
-        if (sabores.includes(gusto2.toLowerCase())===false) {
-            alert("Gusto ingresado incorrecto");
-            break;
-        }
-        gusto3 = prompt("Elija el tercer gusto " + sabores.join(", "));
-        if (sabores.includes(gusto3.toLowerCase())===false) {
-            alert("Gusto ingresado incorrecto");
-            break;
-        }
-        gusto4 = prompt("Elija el cuarto gusto " + sabores.join(", "));
-        if (sabores.includes(gusto4.toLowerCase())===false) {
-            alert("Gusto ingresado incorrecto");
-            break;
-        }
-        break;
-}}
-casos();
-
-eleccion.push(gusto1,gusto2,gusto3,gusto4);
-
-envio = prompt("Desea envio a domicilio? si/no");
-if (envio.toLowerCase()==="si") {
-    direccion = prompt("Ingrese su direccion");
-    resultado = resultado + 200
-    alert ("Se enviara un " + peso + " de " + eleccion.join(", ") + " a " + direccion + ". El costo total es de " + resultado);
-}else{alert ("Elegiste un " + peso + " de " + eleccion.join(", ") + ". El costo total es de " + resultado + ". Te esperamos en rioja al 432");} */
+    }
