@@ -18,6 +18,8 @@
     <!-- CSS Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <!-- CSS ToastifyJS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <!-- CSS -->
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -85,46 +87,18 @@
 
     <section id="sabores">
         <article class="helado">
-            <img src="/multimedia/Helado de frutillas.jpg" alt="">
-            <h3>Frutilla</h3>
-            <p>Disponible</p>
-            <input class="agregar" type="button" value="Agregar">
         </article>
         <article class="helado">
-            <img src="/multimedia/Helado de frutillas.jpg" alt="">
-            <h3>Frutilla</h3>
-            <p>Disponible</p>
-            <input class="agregar" type="button" value="Agregar">
         </article>
         <article class="helado">
-            <img src="/multimedia/Helado de frutillas.jpg" alt="">
-            <h3>Frutilla</h3>
-            <p>Disponible</p>
-            <input class="agregar" type="button" value="Agregar">
         </article>
         <article class="helado">
-            <img src="/multimedia/Helado de frutillas.jpg" alt="">
-            <h3>Frutilla</h3>
-            <p>Disponible</p>
-            <input class="agregar" type="button" value="Agregar">
         </article>
         <article class="helado">
-            <img src="/multimedia/Helado de frutillas.jpg" alt="">
-            <h3>Frutilla</h3>
-            <p>Disponible</p>
-            <input class="agregar" type="button" value="Agregar">
         </article>
         <article class="helado">
-            <img src="/multimedia/Helado de frutillas.jpg" alt="">
-            <h3>Frutilla</h3>
-            <p>Disponible</p>
-            <input class="agregar" type="button" value="Agregar">
         </article>
         <article class="helado">
-            <img src="/multimedia/Helado de frutillas.jpg" alt="">
-            <h3>Frutilla</h3>
-            <p>Disponible</p>
-            <input class="agregar" type="button" value="Agregar">
         </article>
 
     </section>
@@ -135,15 +109,16 @@
         </div>
         <div id="openCart" class="invisible">
             <ul>
-                <h4>1 Kilo</h4>
-                <li>Frutilla</li>
-                <li>Limon</li>
-                <li>Chocolate</li>
+                <h4 id="eleccionPeso">1 Kilo</h4>
+                <li id="eleccionGusto1">Frutilla</li>
+                <li id="eleccionGusto2">Limon</li>
+                <li id="eleccionGusto3">Chocolate</li>
+                <li id="eleccionGusto4">Chocolate</li>
             </ul>
         </div>
     </div>
 
-    <div>
+    <div id="formContainer">
         <form action="" id="form">
             <!-- <label for="check">Desea envio a domicilio?</label>
             <input type="checkbox" name="" id="check"> -->
@@ -163,9 +138,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
     </script>
+    <!-- JS Sweet Alert-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- JS Toastify -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <!-- JS -->
     <script src="/js/main.js"></script>
-
 </body>
 
 </html>
