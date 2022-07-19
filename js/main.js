@@ -1,65 +1,45 @@
 /* clase constructora de helados */
-class Helado {
+/* class Helado {
     constructor(id, nombre, disponible) {
         this.id = id;
         this.nombre = nombre;
         this.disponible = disponible;
     }
-}
-
-/* asigno variables por c/gusto */
-let frutilla = new Helado(01, "Frutilla", true)
-let chocolate = new Helado(02, "Chocolate", true)
-let dulceDeLeche = new Helado(03, "Dulce de leche", true)
-let limon = new Helado(04, "Limon", true)
-let vainilla = new Helado(05, "Vainilla", true)
-let granizado = new Helado(06, "Granizado", false)
-let rocher = new Helado(07, "Rocher", false)
+} */
 
 /* Array con cada helado */
-let sabores = []
-sabores.push(frutilla, chocolate, dulceDeLeche, limon, vainilla, granizado, rocher)
+/* let sabores = [] */
+
+/* asigno variables por c/gusto */
+/* sabores.push(new Helado(01, "Frutilla", true))
+sabores.push(new Helado(02, "Chocolate", true))
+sabores.push(new Helado(03, "Dulce de leche", true))
+sabores.push(new Helado(04, "Limon", true))
+sabores.push(new Helado(05, "Vainilla", true))
+sabores.push(new Helado(06, "Granizado", false))
+sabores.push(new Helado(07, "Rocher", false)) */
 
 
-/* Coloco cada helado del array en un card */
-let helados = document.querySelectorAll(".helado")
-
-for (i = 0; i < sabores.length; i++) {
-    if (sabores[i].disponible === true) {
-        helados[i].innerHTML = `
-        <img src="/multimedia/${sabores[i].nombre}.jpg" alt="">
-        <h3>${sabores[i].nombre}</h3>
-        <p>${sabores[i].disponible? "Disponible":"No Disponible"}</p>
-        <input class="agregar" type="button" value="Agregar">
-        `
+/* Bienvenida */
+let nombre = document.getElementById("usuario");
+let contrasenia = document.getElementById("contra")
+let saludo = document.getElementById("saludo")
+let ingresar = document.getElementById("ingresar");
+ingresar.onclick = () => {
+    if (nombre.value === localStorage.getItem("usuario") && contrasenia.value === localStorage.getItem("password")) {
+        document.getElementById("error1").innerText = ""
+        saludo.innerText = "Sesion de " + nombre.value
+        swal({
+            title: "Bienvenido " + nombre.value,
+            button: "Cerrar",
+            timer: 1500,
+        });
     } else {
-        helados[i].innerHTML = `
-        <img src="/multimedia/${sabores[i].nombre}.jpg" alt="">
-        <h3>${sabores[i].nombre}</h3>
-        <p>${sabores[i].disponible? "Disponible":"No Disponible"}</p>
-        <input class="agregar" type="button" value="Agregar" disabled>
-        `
-    }
-
-}
-
-
-
-/* Aca botones de agregar helados */
-let agregar = document.querySelectorAll(".agregar");
-
-/* function click(element) {
-    element.onclick = () => {
-        if (element.classList.contains("seleccionado")) {
-            element.classList.remove("seleccionado")
-            element.value = "Agregar";
-        } else {
-            element.classList.add("seleccionado")
-            element.value = "Agregado!"
-        }
+        saludo.innerText = ""
+        document.getElementById("error1").innerText = "Su cuenta no existe, registrese";
+        document.getElementById("error1").style = "color: red;";
     }
 }
-agregar.forEach(click); */
 
 /* Tema oscuro */
 let oscuro = document.getElementById("oscuro");
@@ -70,30 +50,111 @@ oscuro.onclick = () => {
     } else {
         body.classList.add("oscuro")
     }
-}
+} /* hacer un storage para el estado del sitio del usuario */
 
-/* Submit del form */
-let form = document.getElementById("form");
-form.addEventListener("submit", mensaje);
+let eleccionPeso = document.getElementById('eleccionPeso')
+let eleccionGusto1 = document.getElementById('eleccionGusto1')
+let eleccionGusto2 = document.getElementById('eleccionGusto2')
+let eleccionGusto3 = document.getElementById('eleccionGusto3')
+let eleccionGusto4 = document.getElementById('eleccionGusto4')
 
-function mensaje(e) {
-    e.preventDefault();
-    let calle = document.getElementById("calle").value;
-    let direccion = document.getElementById("direccion").value;
-    if ((calle.length < 3) || (calle === "") || (direccion === "") || (calle.length > 20) || direccion.length > 20) {
-        document.getElementById("error").innerText = "Ingrese una calle/numero valido";
-    } else {
-        swal({
-            icon: "/multimedia/envio.png",
-            imageWidth: 200,
-            imageHeight: 100,
-            title: "Tu pedido esta en camino a: " + calle + " " + direccion,
-            button: "Cerrar",
-        });
-        document.getElementById("error").innerText = "Su pedido fue enviado con exito!"
+/* Selector peso */
+/* Falta cambiar el innerHTML de gustos dependiendo del peso,
+y permitir seleccionar mas de uno con su respectivo innerhtml */
+let peso = document.querySelectorAll(".peso")
+let seleccionado = []
+console.log(seleccionado)
+peso.forEach(function (element) {
+    element.onclick = () => {
+        if (element.classList.contains("seleccionado") ) {
+            element.classList.remove("seleccionado")
+            ubicacion = seleccionado.indexOf(element)
+            seleccionado.splice(ubicacion,1)
+        } else if (seleccionado < 1) {
+            element.classList.add("seleccionado")
+            seleccionado.push(element)
+            eleccionPeso.innerText = element.querySelector("h2").innerText
+            console.log(seleccionado)
+        }
     }
+})
+
+/* Fetch de datos a una falsa api(json local) */
+fetch("/data/helados.json")
+    .then((resp) => resp.json())
+    .then((gustos) => {
+        for (i = 0; i < gustos.length; i++) {
+            let helados = document.createElement('div')
+            helados.innerHTML = `
+        <img src="${gustos[i].img}" alt="">
+        <h3>${gustos[i].nombre}</h3>
+        <p>${gustos[i].disponible? "Disponible":"No Disponible"}</p>
+        ${gustos[i].disponible? '<input class="agregar" type="button" value="Agregar"></input>' :
+            '<input class="agregar" type="button" value="Agregar" disabled></input>'
+        }
+        `
+            helados.classList.add('helado')
+            document.getElementById('sabores').append(helados)
+        }
+    });
+
+/* Asincronia para los botones del fetch */
+const esperarFetch = (resp) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (true) {
+                resolve(
+                    document.querySelectorAll('.agregar')
+                )
+            }
+        }, 500)
+    })
 }
 
+let seleccion = []
+let agregar = document.querySelectorAll(".agregar")
+console.log(agregar);
+let listado = document.getElementById("listado")
+
+/* Esto vendria a crear un array de seleccion al hacer click sobre el
+boton "agregar" de cada gusto */
+const clickBoton = () => {
+    esperarFetch().then((botones) => {
+        let agregar = botones;
+        for (let i = 0; i < agregar.length; i++) {
+            agregar[i].onclick = () => {
+                console.log(agregar[i])
+                let disponible = agregar[i].previousElementSibling;
+                let nombre = disponible.previousElementSibling.innerText;
+                let ubicacion = seleccion.indexOf(nombre);
+                if (seleccion.length <= 4) {
+                    if (agregar[i].classList.contains('seleccionado')) {
+                        agregar[i].classList.remove("seleccionado")
+                        agregar[i].value = "Agregar"
+                        seleccion.splice(ubicacion,1)
+                        console.log(seleccion)
+                        /* faltaria eliminar cada gusto al deseleccionarlo */
+                    }
+                    else if (seleccion.length < 4) {
+                        seleccion.push(nombre)
+                        agregar[i].classList.add("seleccionado")
+                        agregar[i].value = "Agregado!"
+                        Toastify({
+                            text: "Agregado al carrito",
+                            duration: 1000,
+                            newWindow: true,
+                            gravity: "top",
+                            position: "center",
+                        }).showToast();
+                        console.log(seleccion)
+                        listado.innerHTML += `<li>${nombre}</li>`
+                    }
+                }
+            }
+        }
+    })
+}
+clickBoton();
 
 
 
@@ -121,24 +182,7 @@ registrate.onclick = () => {
 }
 
 
-/* Selector peso */
-let pesos = document.querySelectorAll(".peso")
-let seleccionado = document.querySelectorAll(".seleccionado");
-pesos.forEach(function (element) {
-    element.onclick = () => {
-        if (element.classList.contains("seleccionado")) {
-            element.classList.remove("seleccionado")
-        } else {
-            element.classList.add("seleccionado")
-        }
-    }
-})
-console.log(seleccionado) /* referenciar los datos en aquellos elementos con class seleccionado */
-/* expand.innerHTML = `<ul><h4>${seleccionado.h2}</h4>
-<li></li>
-<li></li>
-<li></li>
-</ul>` */
+
 
 let user = document.getElementById("userRegristo")
 let pass = document.getElementById("passRegistro")
@@ -158,46 +202,25 @@ btn.onclick = () => {
     }
 }
 
-/* Bienvenida */
-let nombre = document.getElementById("usuario");
-let contrasenia = document.getElementById("contra")
-let saludo = document.getElementById("saludo")
-let ingresar = document.getElementById("ingresar");
-ingresar.onclick = () => {
-    if (nombre.value === localStorage.getItem("usuario") && contrasenia.value === localStorage.getItem("password")) {
-        document.getElementById("error1").innerText = ""
-        saludo.innerText = "Sesion de " + nombre.value
-        swal({
-            title: "Bienvenido " + nombre.value,
-            button: "Cerrar",
-            timer: 1500,
-        });
-    } else {
-        saludo.innerText = ""
-        document.getElementById("error1").innerText = "Su cuenta no existe, registrese";
-        document.getElementById("error1").style = "color: red;";
-    }
-}
-console.log(agregar)
-let seleccion = []
 
-for (let i = 0; i < agregar.length; i++) {
-    agregar[i].onclick = () => {
-        if (seleccion.length < 4) {
-            seleccion.push(sabores[i].nombre)
-            console.log(seleccion)
-            expand.innerText = seleccion[i]
-            agregar[i].classList.add("seleccionado")
-            agregar[i].value = "Agregado!"
-            Toastify({
-                text: "Agregado al carrito",
-                duration: 1000,
-                newWindow: true,
-                gravity: "top",
-                position: "center",
-            }).showToast();
-        } else {
-            console.log(seleccion)
-        }
+/* Submit del form */
+let form = document.getElementById("form");
+form.addEventListener("submit", mensaje);
+
+function mensaje(e) {
+    e.preventDefault();
+    let calle = document.getElementById("calle").value;
+    let direccion = document.getElementById("direccion").value;
+    if ((calle.length < 3) || (calle === "") || (direccion === "") || (calle.length > 20) || direccion.length > 20 || direccion.length < 2) {
+        document.getElementById("error").innerText = "Ingrese una calle/numero valido";
+    } else {
+        swal({
+            icon: "/multimedia/envio.png",
+            imageWidth: 200,
+            imageHeight: 100,
+            title: "Tu pedido esta en camino a: " + calle + " " + direccion,
+            button: "Cerrar",
+        });
+        document.getElementById("error").innerText = "Su pedido fue enviado con exito!"
     }
 }

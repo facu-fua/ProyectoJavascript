@@ -1,0 +1,43 @@
+[
+    {"id": 1,
+    "nombre": "Frutilla",
+    "disponible": true,
+    "img": "/multimedia/frutilla.jpg"
+},
+{
+    "id": 2,
+    "nombre": "Chocolate",
+    "disponible": true,
+    "img": "/multimedia/chocolate.jpg"
+},
+{
+    "id": 3,
+    "nombre": "Dulce de Leche",
+    "disponible": true,
+    "img": "/multimedia/dulcedeleche.jpg"
+},
+{
+    "id": 4,
+    "nombre": "Limon",
+    "disponible": true,
+    "img": "/multimedia/limon.jpg"
+},
+{
+    "id": 5,
+    "nombre": "Vainilla",
+    "disponible": true,
+    "img": "/multimedia/vainilla.jpg"
+},
+{
+    "id": 6,
+    "nombre": "Granizado",
+    "disponible": false,
+    "img": "/multimedia/granizado.jpg"
+},
+{
+    "id": 7,
+    "nombre": "Rocher",
+    "disponible": false,
+    "img": "/multimedia/rocher.jpg"
+}
+]

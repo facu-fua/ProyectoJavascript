@@ -170,10 +170,6 @@ header {
     background-color: rgb(79, 179, 79);
 }
 
-article {
-    background-color: rgb(43, 82, 255);
-}
-
 #formContainer {
     display: flex;
     justify-content: center;
