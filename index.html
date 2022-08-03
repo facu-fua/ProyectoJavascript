@@ -34,20 +34,12 @@
         <div>
             <div id="ingreso">
                 <input type="text" name="" id="usuario" placeholder="Usuario">
-                <input type="password" name="contrasenia" id="contra" placeholder="Contraseña">
+                <input type="password" name="" id="password" placeholder="Contraseña">
                 <input type="button" value="Ingresar" id="ingresar">
             </div>
-            <div id="registro">
-                <h6 id="error1"></h6>
-                <h6>Aun no tienes cuenta? <input id="registrate" type="button" value="Registrate"></h6>
-                <div class="registro invisible">
-                    <label for="userRegistro">Ingrese un usuario</label>
-                    <input type="text" name="" id="userRegristo">
-                    <label for="passRegistro">Ingrese una contraseña</label>
-                    <input type="password" name="" id="passRegistro">
-                    <h6 id="error2"></h6>
-                    <input type="button" value="Registrase" id="btnRegistro">
-                </div>
+            <div id="ingreso2">
+                <h6 id="mensaje1"></h6>
+                <h6>Aun no tienes cuenta? <input id="registrarme" type="button" value="Registrate"></h6>
             </div>
         </div>
     </header>
@@ -56,36 +48,20 @@
         <h2 id="saludo"></h2>
         <div>
             <label for="oscuro">Desea entrar en modo oscuro?</label>
-            <input type="checkbox" name="" id="oscuro">
+            <input type="checkbox" name="" id="modoOscuro">
         </div>
     </div>
 
-    <div>
-        <h1>Pesos:</h1>
-        <div class="pesos">
-            <button class="peso"><img src="/multimedia/kilo.jpg" alt="">
-                <h2>1 Kilo</h2>
-                <h3>$1500</h3>
-                <p>(hasta 4 gustos)</p>
-            </button>
-            <button class="peso"><img src="/multimedia/mediokilo.png" alt="">
-                <h2>Mediokilo</h2>
-                <h3>$800</h3>
-                <p>(hasta 4 gustos)</p>
-            </button>
-            <button class="peso"><img src="/multimedia/cuarto.png" alt="">
-                <h2>Cuartokilo</h2>
-                <h3>$450</h3>
-                <p>(hasta 3 gustos)</p>
-            </button>
-        </div>
+    <h2>Selecciona el pote que desees:</h2>
+    <div id="pesos">
     </div>
 
+
     <div>
-        <h1>Sabores:</h1>
+        <h2>Nuestros helados:</h2>
     </div>
 
-    <section id="sabores">
+    <section id="helados">
     </section>
 
     <div id="carrito">
@@ -93,25 +69,90 @@
             <input type="image" src="/multimedia/carrito.png" alt="">
         </div>
         <div id="openCart" class="invisible">
-            <h4 id="eleccionPeso"></h4>
-            <ul id="listado">
-            </ul>
+            <div id="carritoTotal">
+                <h3 id="precioCarrito">Su total es de $0</h3>
+                <div id="botonesCarrito">
+                    <input id="confimarCarrito" type="button" value="Confirmar" disabled>
+                    <input id="vaciarCarrito" type="button" value="Vaciar Carrito" disabled>
+                </div>
+            </div>
         </div>
-    </div>
-
-    <div id="formContainer">
-        <form action="" id="form">
-            <label for="calle">Ingrese su direccion</label>
-            <input type="text" name="" id="calle" placeholder="Calle">
-            <input type="number" name="" id="direccion" placeholder="Numero">
-            <h6 id="error"></h6>
-            <input type="submit" value="Enviar">
-        </form>
     </div>
 
     <footer>
         <h3>Encontranos en Rioja al 432</h3>
     </footer>
+
+
+    <div id="overlaySeleccion" class="invisible overlay">
+        <div id="heladoSeleccion">
+            <div id="contenedorSeleccion">
+                <div id="sabores">
+                    <h3>Selecciona tus gustos:</h3>
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div id="botonesSeleccion">
+                <input type="button" id="confirmarGustos" value="Confirmar" disabled>
+                <input type="button" id="cancelarGustos" value="Cancelar">
+            </div>
+        </div>
+    </div>
+
+    <div id="overlayPago" class="invisible overlay">
+        <div id="contenedorForm">
+            <form action="">
+                <h2 id="precioPago">Su total es de: $1500</h2>
+                <h3>Como desea abonar?</h3>
+                <div id="metodoPago">
+                    <span>
+                        <label for="efectivo">Efectivo</label>
+                        <input type="radio" name="pago" id="efectivo" value="efectivo">
+                    </span>
+                    <span>
+                        <label for="billetera">Billetera</label>
+                        <input type="radio" name="pago" id="billetera" value="billetera">
+                    </span>
+                </div>
+                <h3>Lo retira o se lo llevamos?</h3>
+                <div id="metodoEntrega">
+                    <span>
+                        <label for="local">Retiro en local</label>
+                        <input type="radio" name="entrega" id="local" value="efectivo">
+                    </span>
+                    <span>
+                        <label for="domicilio">Envio a domicilio</label>
+                        <input type="radio" name="entrega" id="domicilio" value="billetera">
+                    </span>
+                </div>
+                <div id="direccionEnvio">
+                    <input type="text" name="" id="direccion" placeholder="Inserte su direccion">
+                </div>
+
+                <div id="botonesFinales">
+                    <input id="btnCompraFinal" type="submit" value="Confirmar">
+                    <input id="btnCancelarFinal" type="button" value="Cancelar">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="overlayRegistro" class="overlay invisible">
+        <div id="registro">
+            <div id="datosRegistro">
+                <h3>Ingrese sus datos para registrarse:</h3>
+                <input id="nuevoUsuario" type="text" placeholder="Ingrese un usuario">
+                <input id="nuevoPassword" type="password" placeholder="Ingrese una contraseña">
+                <input id="nuevoEmail" type="email" placeholder="Ingrese su correo electronico">
+                <input id="nuevoDomicilio" type="text" placeholder="Ingrese su direccion">
+            </div>
+            <div id="botonesRegistro">
+                <input id="confimarRegistro" type="button" value="Resgistrarse">
+                <input id="cancelarRegistro" type="button" value="Cancelar">
+            </div>
+        </div>
+    </div>
 
     <!-- Js bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"

@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "peso": "1 kilo",
+        "precio": 1500,
+        "imagen": "/multimedia/kilo.jpg"
+    },
+    {
+        "id": 2,
+        "peso": "1/2 kilo",
+        "precio": 800,
+        "imagen": "/multimedia/mediokilo.png"
+    },
+    {
+        "id": 3,
+        "peso": "1/4 kilo",
+        "precio": 400,
+        "imagen": "/multimedia/cuarto.png"
+    }
+]

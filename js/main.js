@@ -1,226 +1,449 @@
-/* clase constructora de helados */
-/* class Helado {
-    constructor(id, nombre, disponible) {
-        this.id = id;
-        this.nombre = nombre;
-        this.disponible = disponible;
-    }
-} */
+document.addEventListener("DOMContentLoaded", () => {
+    fetchPotes();
+    fetchHelados();
+})
 
-/* Array con cada helado */
-/* let sabores = [] */
-
-/* asigno variables por c/gusto */
-/* sabores.push(new Helado(01, "Frutilla", true))
-sabores.push(new Helado(02, "Chocolate", true))
-sabores.push(new Helado(03, "Dulce de leche", true))
-sabores.push(new Helado(04, "Limon", true))
-sabores.push(new Helado(05, "Vainilla", true))
-sabores.push(new Helado(06, "Granizado", false))
-sabores.push(new Helado(07, "Rocher", false)) */
-
-
-/* Bienvenida */
-let nombre = document.getElementById("usuario");
-let contrasenia = document.getElementById("contra")
-let saludo = document.getElementById("saludo")
-let ingresar = document.getElementById("ingresar");
-ingresar.onclick = () => {
-    if (nombre.value === localStorage.getItem("usuario") && contrasenia.value === localStorage.getItem("password")) {
-        document.getElementById("error1").innerText = ""
-        saludo.innerText = "Sesion de " + nombre.value
-        swal({
-            title: "Bienvenido " + nombre.value,
-            button: "Cerrar",
-            timer: 1500,
-        });
-    } else {
-        saludo.innerText = ""
-        document.getElementById("error1").innerText = "Su cuenta no existe, registrese";
-        document.getElementById("error1").style = "color: red;";
+//Cargo informacion de una API(en este caso, json local)
+const fetchPotes = async () => {
+    try {
+        const res = await fetch("/data/potes.json");
+        const dataPote = await res.json();
+        creoBtnPote(dataPote);
+    } catch (error) {
+        console.log(error);
     }
 }
 
-/* Tema oscuro */
-let oscuro = document.getElementById("oscuro");
-let body = document.querySelector("body");
-oscuro.onclick = () => {
+const fetchHelados = async () => {
+    try {
+        const res = await fetch("/data/helados.json");
+        const dataHelado = await res.json();
+        creoCardHelado(dataHelado);
+        seleccionHelado(dataHelado);
+        let checkBoxes = document.querySelectorAll("#sabores ul li input");
+        const gustosSeleccionados = [];
+        seleccionPeso(checkBoxes, gustosSeleccionados);
+        checkBoxHelados(gustosSeleccionados);
+        cancelarSeleccion(checkBoxes)
+        confirmarSeleccion(checkBoxes, gustosSeleccionados)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+//Creo los botones de cada pote con la data del fetch
+const creoBtnPote = dataPote => {
+    dataPote.forEach(pote => {
+        let poteContainer = document.getElementById("pesos");
+        let btnPote = document.createElement("button");
+        btnPote.innerHTML = `
+        <img src="${pote.imagen}" alt="">
+        <h2>${pote.peso}</h2>
+        <h3>$${pote.precio}</h3>
+        `;
+        btnPote.classList.add("peso");
+        btnPote.setAttribute("data-id", pote.id);
+        poteContainer.append(btnPote);
+    })
+};
+
+//Creo los cards de helados con la data del fetch
+const creoCardHelado = dataHelado => {
+    dataHelado.forEach(helado => {
+        let heladoContainer = document.getElementById("helados");
+        let cardHelado = document.createElement("div");
+        cardHelado.innerHTML = `
+        <img src="${helado.img}" alt="">
+        <h3>${helado.nombre}</h3>
+        <h4>${helado.disponible? "Disponible" : "No Disponible"}</h4>
+        `
+        cardHelado.classList.add("helado");
+        cardHelado.setAttribute("data-id", helado.id);
+        heladoContainer.append(cardHelado);
+    })
+};
+
+// Boton toggle modo oscuro
+let btnModoOscuro = document.getElementById("modoOscuro");
+btnModoOscuro.onclick = () => {
+    let body = document.body;
     if (body.classList.contains("oscuro")) {
         body.classList.remove("oscuro");
     } else {
-        body.classList.add("oscuro")
+        body.classList.add("oscuro");
     }
-} /* hacer un storage para el estado del sitio del usuario */
+};
 
-let eleccionPeso = document.getElementById('eleccionPeso')
-let eleccionGusto1 = document.getElementById('eleccionGusto1')
-let eleccionGusto2 = document.getElementById('eleccionGusto2')
-let eleccionGusto3 = document.getElementById('eleccionGusto3')
-let eleccionGusto4 = document.getElementById('eleccionGusto4')
-
-/* Selector peso */
-/* Falta cambiar el innerHTML de gustos dependiendo del peso,
-y permitir seleccionar mas de uno con su respectivo innerhtml */
-let peso = document.querySelectorAll(".peso")
-let seleccionado = []
-console.log(seleccionado)
-peso.forEach(function (element) {
-    element.onclick = () => {
-        if (element.classList.contains("seleccionado") ) {
-            element.classList.remove("seleccionado")
-            ubicacion = seleccionado.indexOf(element)
-            seleccionado.splice(ubicacion,1)
-        } else if (seleccionado < 1) {
-            element.classList.add("seleccionado")
-            seleccionado.push(element)
-            eleccionPeso.innerText = element.querySelector("h2").innerText
-            console.log(seleccionado)
-        }
+//Boton toggle carrito
+let btnCarrito = document.getElementById("cartLogo");
+let carrito = document.getElementById("openCart");
+btnCarrito.onclick = () => {
+    if (carrito.classList.contains("invisible")) {
+        carrito.classList.remove("invisible");
+    } else {
+        carrito.classList.add("invisible");
     }
-})
+};
 
-/* Fetch de datos a una falsa api(json local) */
-fetch("/data/helados.json")
-    .then((resp) => resp.json())
-    .then((gustos) => {
-        for (i = 0; i < gustos.length; i++) {
-            let helados = document.createElement('div')
-            helados.innerHTML = `
-        <img src="${gustos[i].img}" alt="">
-        <h3>${gustos[i].nombre}</h3>
-        <p>${gustos[i].disponible? "Disponible":"No Disponible"}</p>
-        ${gustos[i].disponible? '<input class="agregar" type="button" value="Agregar"></input>' :
-            '<input class="agregar" type="button" value="Agregar" disabled></input>'
-        }
-        `
-            helados.classList.add('helado')
-            document.getElementById('sabores').append(helados)
-        }
-    });
-
-/* Asincronia para los botones del fetch */
-const esperarFetch = (resp) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (true) {
-                resolve(
-                    document.querySelectorAll('.agregar')
-                )
-            }
-        }, 500)
+//Eleccion de peso, muestra la seccion para armar el pote y crea un card con el pote elegido
+//en la misma. Tambien resetea los valores de la seccion.
+const seleccionPeso = (checkBoxes, gustosSeleccionados) => {
+    let peso = document.querySelectorAll(".peso");
+    let overlaySeleccion = document.getElementById("overlaySeleccion");
+    let contenedorSeleccion = document.getElementById("contenedorSeleccion");
+    peso.forEach(peso => peso.onclick = () => {
+        overlaySeleccion.classList.remove("invisible");
+        let clone = peso.cloneNode(true);
+        clone.setAttribute("id", "poteElegido");
+        contenedorSeleccion.prepend(clone);
+        gustosSeleccionados.length = 0;
+        confirmarGustos.disabled = true;
+        checkBoxes.forEach(check => check.checked = false)
     })
 }
 
-let seleccion = []
-let agregar = document.querySelectorAll(".agregar")
-console.log(agregar);
-let listado = document.getElementById("listado")
+//En base al contenido del array de gustos agrega o quita los helados seleccionados por checkbox
+const checkBoxHelados = (gustosSeleccionados) => {
+        let checks = document.querySelectorAll("#sabores ul li input");
+        let max = 4;
+        for (let i = 0; i < checks.length; i++)
+            checks[i].onclick = () => {
+                let checkedChecks = document.querySelectorAll("#sabores ul li input:checked");
+                if (checks[i].checked === true && checkedChecks.length <=max ) {
+                    gustosSeleccionados.push(checks[i].id);
+                    confirmarGustos.disabled = false;
+                } else if (checks[i].checked === false) {
+                    posicion = gustosSeleccionados.indexOf(checks[i].id);
+                    gustosSeleccionados.splice(posicion, 1);
+                    if (gustosSeleccionados.length < 1) {
+                        confirmarGustos.disabled = true;
+                    }
+                }if (checkedChecks.length >= max + 1)
+                return false;
+            };
+}
 
-/* Esto vendria a crear un array de seleccion al hacer click sobre el
-boton "agregar" de cada gusto */
-const clickBoton = () => {
-    esperarFetch().then((botones) => {
-        let agregar = botones;
-        for (let i = 0; i < agregar.length; i++) {
-            agregar[i].onclick = () => {
-                console.log(agregar[i])
-                let disponible = agregar[i].previousElementSibling;
-                let nombre = disponible.previousElementSibling.innerText;
-                let ubicacion = seleccion.indexOf(nombre);
-                if (seleccion.length <= 4) {
-                    if (agregar[i].classList.contains('seleccionado')) {
-                        agregar[i].classList.remove("seleccionado")
-                        agregar[i].value = "Agregar"
-                        seleccion.splice(ubicacion,1)
-                        console.log(seleccion)
-                        /* faltaria eliminar cada gusto al deseleccionarlo */
+
+
+        //Creo los li checkbox para cada gusto
+        const seleccionHelado = (dataHelado) => {
+            dataHelado.forEach(sabor => {
+                let li = document.createElement("li");
+                let ul = document.querySelector("#sabores ul");
+                li.innerHTML = `
+    <label for="${sabor.nombre.toLowerCase()}">${sabor.nombre}</label>
+    <input type="checkbox" id="${sabor.nombre.toLowerCase()}" value="${sabor.nombre}" ${sabor.disponible? "": "disabled"}>
+    `;
+                ul.append(li);
+            })
+        };
+
+
+        //cancelar hace invisible el overlay, borra el div del pote, deselecciona los checkbox y vacia el array
+        const cancelarSeleccion = (checkBoxes) => {
+            cancelarGustos.onclick = () => {
+                overlaySeleccion.classList.add("invisible")
+                let poteElegido = document.getElementById("poteElegido")
+                poteElegido.remove()
+                checkBoxes.forEach(check => check.checked = false)
+            }
+        }
+
+
+        //variables
+        //Aca verificamos si hay elementos del carrito guardados en el local storage, si existen se guardan en el array
+        let arrayPotes = []
+        if (JSON.parse(localStorage.getItem("arrayPotes"))){
+            arrayPotes = JSON.parse(localStorage.getItem("arrayPotes"))
+        }
+        contadorEleCarrito = arrayPotes.length
+        const precios = []
+        let confirmarGustos = document.getElementById("confirmarGustos")
+        let cancelarGustos = document.getElementById("cancelarGustos")
+
+        //Al confirmar se crea un div con dos divs dentro, uno con el pote creado y otro con el listado de gustos
+        //tambien resetea y pone invisible el overlay de seleccion de gustos, y podruce un objeto del pote
+        confirmarSeleccion = (checkBoxes, gustosSeleccionados) => {
+
+                confirmarGustos.onclick = () => {
+                    overlaySeleccion.classList.add("invisible");
+                    let poteElegido = document.getElementById("poteElegido")
+                    let imagen = poteElegido.querySelector("img").getAttribute("src")
+                    let peso = poteElegido.querySelector("h2").textContent
+                    let precio = +(poteElegido.querySelector("h3").textContent.replace("$", ""))
+                    checkBoxes.forEach(check => check.checked = false)
+                    let div = document.createElement("div");
+                    div.classList.add("pote", `${contadorEleCarrito++}`)
+                    let divPote = document.createElement("div");
+                    divPote.classList.add("poteCreado");
+                    divPote.innerHTML = `
+                    <img src="${imagen}" alt="">
+                    <h4>${peso} - Precio: $<span class ="precio">${precio}</span></h4>
+                    <input class="infoPote" type="button" value="info">
+                    <input class="eliminarPote" type="button" value="eliminar">`;
+                    let divLista = document.createElement("div");
+                    divLista.classList.add("listaInfo", "invisible");
+                    for (gusto of gustosSeleccionados) {
+                        let h6 = document.createElement("h6");
+                        h6.innerHTML = gusto;
+                        divLista.append(h6)
+                    };
+                    div.append(divPote)
+                    div.append(divLista)
+
+                    let objPote = {
+                        img:imagen,
+                        peso:peso,
+                        precio:precio,
+                        gustos: [...gustosSeleccionados],
+                        poteNum:contadorEleCarrito
                     }
-                    else if (seleccion.length < 4) {
-                        seleccion.push(nombre)
-                        agregar[i].classList.add("seleccionado")
-                        agregar[i].value = "Agregado!"
-                        Toastify({
-                            text: "Agregado al carrito",
-                            duration: 1000,
-                            newWindow: true,
-                            gravity: "top",
-                            position: "center",
-                        }).showToast();
-                        console.log(seleccion)
-                        listado.innerHTML += `<li>${nombre}</li>`
-                    }
+
+                    arrayPotes.push(objPote)
+                    localStorage.setItem("arrayCarrito", JSON.stringify(arrayPotes))
+                    console.log(arrayPotes)
+
+                    carrito.prepend(div)
+                    precioPotes(precio);
+                    infoPote();
+                    eliminarPote();
+                    poteElegido.remove()
+                    confirmarCarrito.disabled = false
+                    vaciarCarrito.disabled = false
+                    Toastify({
+                        text: "Agregado al carrito",
+                        duration: 1000,
+                        newWindow: true,
+                        gravity: "top",
+                        position: "center",
+                    }).showToast();
                 }
+}
+
+
+        const precioPotes = (precio) => {
+            let precioCarrito = document.getElementById("precioCarrito")
+            precios.push(precio)
+            precioTotal = precios.reduce((acc, precio) => acc + precio, 0)
+            precioCarrito.innerHTML = `Su total es de $${precioTotal}`
+        }
+
+        const infoPote = () => {
+            let infoPote = document.querySelectorAll(".infoPote")
+            infoPote.forEach(pote => pote.onclick = () => {
+                let padre = pote.parentElement
+                let listaInfo = padre.nextElementSibling
+                if (listaInfo.classList.contains("invisible")) {
+                    listaInfo.classList.remove("invisible")
+                } else {
+                    listaInfo.classList.add("invisible")
+                }
+            })
+        }
+
+        const eliminarPote = () => {
+            let eliminarPote = document.querySelectorAll(".eliminarPote")
+            eliminarPote.forEach(pote => pote.onclick = () => {
+                let padre = pote.parentElement
+                let abuelo = padre.parentElement
+                let precio = +(padre.querySelector(".precio").textContent)
+                
+                let clasePote = abuelo.classList.item(1)
+                arrayPotes.splice(clasePote,1)
+                console.log(arrayPotes)
+                contadorEleCarrito--
+                localStorage.setItem("arrayCarrito", JSON.stringify(arrayPotes))
+                
+                let index = precios.indexOf(precio)
+                precios.splice(index, 1)
+                precioTotal = precios.reduce((acc, precio) => acc + precio, 0)
+                precioCarrito.innerHTML = `Su total es de $${precioTotal}`
+                abuelo.remove()
+                if (precioTotal == 0) {
+                    confirmarCarrito.disabled = true
+                    vaciarCarrito.disabled = true
+                }
+                Toastify({
+                    text: "Pote eliminado",
+                    style: {
+                        background: "rgb(255, 62, 62)",
+                    },
+                    duration: 1000,
+                    newWindow: true,
+                    gravity: "top",
+                    position: "center",
+                }).showToast();
+            })
+        }
+
+        //Botones confirmar pago, vaciar carrito
+        let confirmarCarrito = document.getElementById("confimarCarrito")
+        let vaciarCarrito = document.getElementById("vaciarCarrito")
+        //variables del form para pagar
+        let overlayPago = document.getElementById("overlayPago")
+        const vaciar = () => {
+            vaciarCarrito.disabled = true
+            confirmarCarrito.disabled = true
+            let potes = document.querySelectorAll(".pote")
+            potes.forEach(pote => pote.remove())
+            precios.length = 0
+            precioCarrito.innerHTML = `Su total es de $0`
+            carrito.classList.add("invisible");
+            arrayPotes.length = 0
+            contadorEleCarrito = 0
+            localStorage.setItem("arrayCarrito", JSON.stringify(arrayPotes))
+        }
+
+        vaciarCarrito.onclick = () => {
+            vaciar()
+            Toastify({
+                text: "Carrito Vaciado",
+                style: {
+                    background: "rgb(255, 62, 62)",
+                },
+                duration: 1000,
+                newWindow: true,
+                gravity: "top",
+                position: "center",
+            }).showToast();
+        }
+
+        //Boton confirmar pago abre el form de pago y envio
+        confirmarCarrito.onclick = () => {
+            overlayPago.classList.remove("invisible")
+            let pagar = document.getElementById("precioPago")
+            pagar.innerText = `El total a pagar es de: $${precioTotal}`
+        }
+
+        //Botones del formulario
+        let compraFinal = document.querySelector("#contenedorForm form")
+        let cancelarFinal = document.getElementById("btnCancelarFinal")
+
+        //variables
+        let metodoPago = document.querySelectorAll("#metodoPago input");
+        let metodoEntrega = document.querySelectorAll("#metodoEntrega input");
+        let direccionEnvio = document.querySelector("#direccionEnvio input");
+
+        //Boton cancelarFinal
+        cancelarFinal.onclick = () => {
+            overlayPago.classList.add("invisible")
+            metodoPago.forEach(radio => radio.checked = false)
+            metodoEntrega.forEach(radio => radio.checked = false)
+            direccionEnvio.value = ""
+        }
+
+        compraFinal.addEventListener("submit", (e) => {
+            e.preventDefault()
+            overlayPago.classList.add("invisible")
+            vaciar()
+            if (metodoEntrega[0].checked === true){
+                swal({
+                    icon: "/multimedia/local.jpg",
+                    imageWidth: 200,
+                    imageHeight: 100,
+                    title: `Tu pedido esta siendo preparado. Te esperamos!`,
+                    button: "Cerrar",
+                });
+            }else if (metodoEntrega[1].checked === true) {
+                swal({
+                    icon: "/multimedia/envio.png",
+                    imageWidth: 200,
+                    imageHeight: 100,
+                    title: `Tu pedido esta en camino a ${direccionEnvio.value}`,
+                    button: "Cerrar",
+                });
+            }
+        })
+
+        //Botones/input del Ingreso
+        let user = document.getElementById("usuario")
+        let password = document.getElementById("password")
+        let ingresar = document.getElementById("ingresar")
+        let overlayRegistro = document.getElementById("overlayRegistro")
+
+        //Botones del registro
+        let registrarme = document.getElementById("registrarme")
+        let confimarRegistro = document.getElementById("confimarRegistro")
+        let cancelarRegistro = document.getElementById("cancelarRegistro")
+
+        //Botones inputs del registro
+        let nuevoUsuario = document.getElementById("nuevoUsuario")
+        let nuevoPassword = document.getElementById("nuevoPassword")
+        let nuevoEmail = document.getElementById("nuevoEmail")
+        let nuevoDomicilio = document.getElementById("nuevoDomicilio")
+
+        ingresar.onclick = () => {
+            if (user.value === JSON.parse(localStorage.getItem("nuevoUser")).usuario && password.value === JSON.parse(localStorage.getItem("nuevoUser")).password) {
+                document.getElementById("saludo").innerText = `Bienvenid@ ${user.value}`
+            } else {
+                let mensaje1 = document.getElementById("mensaje1");
+                mensaje1.innerText = "Error: el usuario/contraseña son incorrectos";
+                document.getElementById("saludo").innerText = ""
+                setTimeout(() => {
+                    mensaje1.innerText = ""
+                }, 5000)
             }
         }
-    })
-}
-clickBoton();
+
+        //Boton registrarme solo habilita la ventana para ingresar datos
+        registrarme.onclick = () => {
+            overlayRegistro.classList.remove("invisible")
+        }
+
+        //Boton cancelar el registro, limpia los valores ingresados previamente
+        cancelarRegistro.onclick = () => {
+            overlayRegistro.classList.add("invisible");
+            let inputs = document.querySelectorAll("#datosRegistro input")
+            for (input of inputs) {
+                input.value = ""
+            }
+        }
+
+        //Guarda la data del registro en el storage
+        confimarRegistro.onclick = () => {
+            overlayRegistro.classList.add("invisible");
+            let usuarioCreado = {
+                usuario: nuevoUsuario.value,
+                password: nuevoPassword.value,
+                email: nuevoEmail.value,
+                domicilio: nuevoDomicilio.value
+            }
+            localStorage.setItem("nuevoUser", JSON.stringify(usuarioCreado))
+        }
 
 
 
-let expand = document.getElementById("openCart")
-let carrito = document.getElementById("cartLogo");
+        
 
-/* Expandir carrito */
-carrito.onclick = () => {
-    if (expand.classList.contains("invisible")) {
-        expand.classList.remove("invisible")
-    } else {
-        expand.classList.add("invisible")
-    }
-} /* falta que los sabores y peso se reemplazen por los seleccionados */
-
-/* Expandir registro */
-let registrate = document.getElementById("registrate")
-let registro = document.querySelector(".registro")
-registrate.onclick = () => {
-    if (registro.classList.contains("invisible")) {
-        registro.classList.remove("invisible")
-    } else {
-        registro.classList.add("invisible")
-    }
-}
-
-
-
-
-let user = document.getElementById("userRegristo")
-let pass = document.getElementById("passRegistro")
-let btn = document.getElementById("btnRegistro")
-
-/* Storage */
-localStorage.setItem("sabores", JSON.stringify(sabores));
-btn.onclick = () => {
-    if (user.value === "" || user.value.length > 15 || pass.value === "" || pass.value.length > 20) {
-        document.getElementById("error2").innerText = "Ingrese entre 1 y 20 caracteres en cada area"
-        document.getElementById("error2").style = "color: red;"
-    } else {
-        document.getElementById("error2").innerText = ""
-        localStorage.setItem("usuario", (user.value));
-        localStorage.setItem("password", (pass.value));
-        registro.classList.add("invisible")
-    }
-}
-
-
-/* Submit del form */
-let form = document.getElementById("form");
-form.addEventListener("submit", mensaje);
-
-function mensaje(e) {
-    e.preventDefault();
-    let calle = document.getElementById("calle").value;
-    let direccion = document.getElementById("direccion").value;
-    if ((calle.length < 3) || (calle === "") || (direccion === "") || (calle.length > 20) || direccion.length > 20 || direccion.length < 2) {
-        document.getElementById("error").innerText = "Ingrese una calle/numero valido";
-    } else {
-        swal({
-            icon: "/multimedia/envio.png",
-            imageWidth: 200,
-            imageHeight: 100,
-            title: "Tu pedido esta en camino a: " + calle + " " + direccion,
-            button: "Cerrar",
-        });
-        document.getElementById("error").innerText = "Su pedido fue enviado con exito!"
-    }
-}
+        //STORAGE DEL CARRITO
+        const localCarrito = () =>{
+            if (localStorage.getItem("arrayCarrito")){
+                let carritoPrevio = JSON.parse(localStorage.getItem("arrayCarrito"))
+                carritoPrevio.forEach(obj =>{
+                        let div = document.createElement("div");
+                        div.classList.add("pote", `${contadorEleCarrito++}`)
+                        let divPote = document.createElement("div");
+                        divPote.classList.add("poteCreado");
+                        divPote.innerHTML = `
+                        <img src="${obj.img}" alt="">
+                        <h4>${obj.peso} - Precio: $<span class ="precio">${obj.precio}</span></h4>
+                        <input class="infoPote" type="button" value="info">
+                        <input class="eliminarPote" type="button" value="eliminar">`;
+                        let divLista = document.createElement("div");
+                        divLista.classList.add("listaInfo", "invisible");
+                        for (gusto of obj.gustos) {
+                            let h6 = document.createElement("h6");
+                            h6.innerHTML = gusto;
+                            divLista.append(h6)
+                        };
+                        div.append(divPote)
+                        div.append(divLista)
+                        carrito.prepend(div)
+                    precioPotes(obj.precio);
+                    infoPote();
+                    eliminarPote();
+                    confirmarCarrito.disabled = false
+                    vaciarCarrito.disabled = false
+                    arrayPotes = carritoPrevio 
+                })}}
+        localCarrito()
